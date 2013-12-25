@@ -2,7 +2,7 @@
 function c62077657.initial_effect(c)
 	--battle destroyed
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(22567609,0))
+	e1:SetDescription(aux.Stringid(62077657,0))
 	e1:SetCategory(CATEGORY_RECOVER+CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_BATTLE_DESTROYED)
@@ -10,10 +10,8 @@ function c62077657.initial_effect(c)
 	e1:SetTarget(c62077657.target)
 	e1:SetOperation(c62077657.operation)
 	c:RegisterEffect(e1)
-	
 	--lp
 	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(23562407,0))
 	e4:SetCategory(CATEGORY_RECOVER)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_MZONE)
@@ -43,10 +41,10 @@ function c62077657.operation(e,tp,eg,ep,ev,re,r,rp)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ft<=0 then return end
 	local g=Duel.GetMatchingGroup(c62077657.filter,tp,LOCATION_DECK+LOCATION_GRAVE,0,nil,e,tp)
-	if g:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(22567609,1)) then
+	if g:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(62077657,0)) then
 		Duel.BreakEffect()
 		Duel.SpecialSummonStep(g:GetFirst(),0,tp,tp,false,false,POS_FACEUP)
-		if ft>1 and g:GetCount()>1 and Duel.SelectYesNo(tp,aux.Stringid(22567609,1)) then
+		if ft>1 and g:GetCount()>1 and Duel.SelectYesNo(tp,aux.Stringid(62077657,0)) then
 			Duel.SpecialSummonStep(g:GetNext(),0,tp,tp,false,false,POS_FACEUP)
 		end
 		Duel.SpecialSummonComplete()

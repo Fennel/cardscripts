@@ -21,14 +21,14 @@ function c56160378.filter(c)
 	return c:IsCode(77366257) and c:IsFaceup()
 end
 function c56160378.effcon(e)
-	AI.Chat("condition check")
-	if Duel.IsExistingMatchingCard(c56160378.filter,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,nil) then AI.Chat("Eleanor is faceup!") end
+	--AI.Chat("condition check")
+	--if Duel.IsExistingMatchingCard(c56160378.filter,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,nil) then AI.Chat("Eleanor is faceup!") end
 	return Duel.IsExistingMatchingCard(c56160378.filter,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,nil)
 end
 function c56160378.target(e,c)
-	AI.Chat(c:GetCode())
-	if not c:IsCode(56160378) and c:IsType(TYPE_MONSTER) then
-		AI.Chat("applicable")
-	else AI.Chat("mot applicable") end
+	--AI.Chat(c:GetCode())
+	--if not c:IsCode(56160378) and c:IsType(TYPE_MONSTER) then
+		--AI.Chat("applicable")
+	--else AI.Chat("mot applicable") end
 	return not c:IsCode(56160378) and c:IsType(TYPE_MONSTER)
 end

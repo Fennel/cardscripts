@@ -12,7 +12,7 @@ function c34467241.initial_effect(c)
 	c:RegisterEffect(e1)
 	--synchro effect
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(50091196,1))
+	e2:SetDescription(aux.Stringid(34467241,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
@@ -25,6 +25,9 @@ function c34467241.initial_effect(c)
 end
 function c34467241.filter(c)
 	return c:IsCode(77366257) and c:IsAbleToHand()
+end
+function c34467241.filter2(c)
+	return c:IsCode(77366257) and c:IsFaceup()
 end
 function c34467241.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c34467241.filter,tp,LOCATION_DECK,0,1,nil) end
@@ -39,19 +42,35 @@ function c34467241.op(e,tp,eg,ep,ev,re,r,rp)
 end
 function c34467241.sccon(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsStatus(STATUS_CHAINING) and Duel.GetTurnPlayer()~=tp
-		and (Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2)
+		and (Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2) and Duel.IsExistingMatchingCard(c34467241.filter2,e:GetHandler():GetControler(),LOCATION_MZONE,0,1,nil)
+end
+function c34467241.get_synchroable_group(tp)
+	local tg = Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_MZONE,0,nil,TYPE_TUNER)
+	local tuner = tg:GetFirst()
+	local sg=Group.CreateGroup()
+	while tuner do
+		local g=Duel.GetMatchingGroup(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,nil,tuner)
+		if g then
+			sg:Merge(g)
+		end
+		tuner=tg:GetNext()
+	end
+	return sg
 end
 function c34467241.sctarg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,1,nil,e:GetHandler()) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
+	local sg=c34467241.get_synchroable_group(tp)
+	if chk==0 then
+		return sg:GetCount()>0
+	end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,sg,1,tp,LOCATION_EXTRA)
 end
 function c34467241.scop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetControler()~=tp or not c:IsRelateToEffect(e) then return end
-	local g=Duel.GetMatchingGroup(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,nil,c)
+	local g=c34467241.get_synchroable_group(tp)
 	if g:GetCount()>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sg=g:Select(tp,1,1,nil)
-		Duel.SynchroSummon(tp,sg:GetFirst(),c)
+		Duel.SynchroSummon(tp,sg:GetFirst(),nil)
 	end
 end
