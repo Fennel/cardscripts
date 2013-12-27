@@ -63,5 +63,6 @@ function c99215803.sop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c99215803.scon2(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_GRAVE,0,1,e:GetHandler(),0x3fe)
+	local c=e:GetHandler()
+	return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_GRAVE,0,1,c,0x3fe) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
